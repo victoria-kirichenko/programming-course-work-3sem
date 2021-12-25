@@ -1,6 +1,8 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "Menu.hpp"
 
-int main() {
-    Menu course_work;
-    course_work.Start();
+int main()
+{
+	Menu course;
+	course.Start();
 }

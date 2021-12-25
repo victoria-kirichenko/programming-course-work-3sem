@@ -1,20 +1,18 @@
-#ifndef MENU_HPP_INCLUDED
-#define MENU_HPP_INCLUDED
+#pragma once
+#include <iostream>
+#include <fstream>
+#include <cstdlib> 
+#include "DataBase.hpp"
 #include "List.hpp"
-#include "full_class/DataBase.hpp"
 
-class Menu {
-
+class Menu
+{
+private:
+	bool loop;
+	List info;
 public:
 	Menu();
 	void Start();
 	void AddR();
 	void Add();
-	void Del();
-
-private:
-	bool loop;
-	List info;
 };
-
-#endif // MENU_HPP_INCLUDED

@@ -1,30 +1,30 @@
-#ifndef LIST_HPP_INCLUDED
-#define LIST_HPP_INCLUDED
-#include "full_class/DataBase.hpp"
+#pragma once
+#include "DataBase.hpp"
+#include <iostream>
+#include <fstream>
 
-class List {
-
+class List
+{
+private:
+	int* index;
+	std::fstream Stream;
 public:
 	List();
-    
+	~List();
 	void Printinfo();
 	int Size();
 	void Get(DataBase& object, const int& i = 0);
 	void UpdateInfo();
 	void Add(const DataBase& object);
 	void Add(const DataBase& object, const int& i);
+	void AddWith(DataBase& object);
 	void Del(const int& i);
 	void Clear();
 	void PrintAll();
-	void PrintPaidAll();
+	void PrintNotPaidAll();
+	void PaidTarif(int i);
+	void PaidTarifAll();
 	void Sort();
 	void PricePrint();
-
-    ~List();
-
-private:
-	int* index;
-	std::fstream Stream;
+	void Edit(int i);
 };
-
-#endif // LIST_HPP_INCLUDED
