@@ -4,7 +4,8 @@
 #include <fstream>
 using namespace std;
 
-class MyException : public exception {
+class MyException : public exception
+{
 public:
 	MyException(const char* msg) : message(msg) {};
 	const char* what() {
@@ -20,34 +21,29 @@ protected:
 	int dd, mm, yy;
 
 public:
+
 	Date();
 
 	Date(const int& day, const int& month, const int& year);
 
-	void SetDate(const int& day, const int& month, const int& year);
-	void SetDateNow();
-
 	int GetDay() { return dd; };
 	int GetMonth() { return mm; };
 	int GetYear() { return yy; };
+
 	void SetDay(int valueDay);
 	void SetMonth(int valueMonth);
 	void SetYear(int valueYear);
+	void SetDate(const int& day, const int& month, const int& year);
+	void SetDateNow();
 
-	bool CheckingDate();
-	//char* ToString();
 	bool isEmpty();
-	//char* GetDDate();
-
-	void CheckingDay(int day);
-	void CheckingMonth(int month);
-	void CheckingYear(int year);
 
 	bool operator==(const Date& t);
 	bool operator>(const Date& t);
 
 	friend std::ostream& operator<< (std::ostream& out, const Date& t);
 	friend std::istream& operator>> (std::istream& in, Date& t);
+
 	~Date();
 };
 
@@ -74,23 +70,8 @@ public:
 		const int& date_d, const int& date_m, const int& date_y,
 		const int& duration, const char* telephone);
 
-	~DataBase();
-	void Print();
-	void PrintNotPaid();
-	void Paid(const int& payment_d, const int& payment_m, const int& payment_y);
-	void PaidNow();
-	bool isPaid() { return !a_payment.isEmpty(); };
-	bool isEmpty();
-	void RDate();
-	void RDuration() {
-		a_duration = rand() % 200;
-	};
-	void ChooseTarif();
-	Date Date() { return a_date; };
-
 	void SetCity(const char* newCity);
 	void SetCityKey(int newKey);
-	void ChangeTarif();
 	void SetDuration();
 	void SetTelephone(const char* newTel);
 	void SetPayDay(int newDay);
@@ -99,15 +80,36 @@ public:
 	void SetDDay(int newDay);
 	void SetMMonth(int newMonth);
 	void SetYYear(int newYear);
-		
-	int GetPrice() {
-		a_price = a_tarif * a_duration;
-		return a_price;
+	void SetPayDateNow();
+
+	void ChooseTarif();
+	void Paid(const int& payment_d, const int& payment_m, const int& payment_y);
+	void PaidNow();
+
+	void Print();
+	void PrintNotPaid();
+
+	void RDate();
+	void RDuration() {
+		a_duration = rand() % 200;
 	};
 
-	void CheckingDuration(int duration)
+	Date Date() { return a_date; };
+	bool isPaid() { return !a_payment.isEmpty(); };
+	bool isEmpty();
+	bool CheckingDate();
 
+	void SetPrice() {
+		a_price = a_tarif * a_duration;
+	};
+
+	int GetPrice() {
+		return a_price;
+	}
+
+	DataBase& operator= (DataBase& t);
 	friend std::ostream& operator<< (std::ostream& out, const DataBase& t);
 	friend std::istream& operator>> (std::istream& in, DataBase& t);
-	DataBase& operator= (DataBase& t);
+
+	~DataBase();
 };

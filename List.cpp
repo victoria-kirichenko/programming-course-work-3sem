@@ -1,4 +1,4 @@
-#include "List.hpp"
+#include "List.h"
 
 void List::UpdateInfo()
 {
@@ -169,6 +169,20 @@ void List::PrintAll()
 	}
 }
 
+void List::PrintPage()
+{
+	int size = Size();
+	for (int i = 0; i < size; i++)
+	{
+		std::cout << "Object " << i + 1 << " have info: \n";
+		DataBase b;
+		Get(b, i);
+		b.Print();
+		std::cout << "\n";
+		system("pause");
+	}
+}
+
 void List::PrintNotPaidAll()
 {
 	int size = Size();
@@ -178,7 +192,7 @@ void List::PrintNotPaidAll()
 		Get(b, i);
 		if (!b.isPaid())
 		{
-			std::cout << "Object " << i + 1 << " have info:";
+			std::cout << "Object " << i + 1 << " have info:\n";
 			b.PrintNotPaid();
 			std::cout << "\n";
 		}
@@ -238,18 +252,20 @@ void List::Sort()
 	UpdateInfo();
 }
 
-void List::PricePrint()
+void List::PrintPrice()
 {
 	int size = Size();
 	for (int i = 0; i < size; i++)
 	{
 		DataBase b;
 		Get(b, i);
+		std::cout << "Object " << i + 1 << " have info:\n";
 		std::cout << b.GetPrice() << std::endl;
 	}
 }
 
-void List::PaidTarif(int i) {
+void List::PaidTarif(int i)
+{
 	DataBase b;
 	Get(b, i);
 	b.PaidNow();
@@ -257,10 +273,12 @@ void List::PaidTarif(int i) {
 	Del(i + 1);
 }
 
-void List::PaidTarifAll() {
+void List::PaidTarifAll()
+{
 	int size = Size();
 	DataBase b;
-	for (int i = 0; i < size; i++) {
+	for (int i = 0; i < size; i++)
+	{
 		Get(b, i);
 		b.PaidNow();
 		Add(b, i);
@@ -268,7 +286,8 @@ void List::PaidTarifAll() {
 	}
 }
 
-void List::Edit(int i) {
+void List::Edit(int i)
+{
 	char City[50];
 	bool loop = true;
 	int key, dd, mm, yy;
@@ -276,7 +295,7 @@ void List::Edit(int i) {
 	DataBase b;
 	Get(b, i);
 	std::cout << "What do you want to change? Click '0'" << endl;
-	int c = 0;
+	int c = 0, idx = 0;
 	while (loop)
 	{
 		std::cin >> c;
@@ -304,7 +323,7 @@ void List::Edit(int i) {
 			std::cout << "Ready!\n";
 			break;
 		case 5:
-			b.ChangeTarif();
+			b.ChooseTarif();
 			std::cout << "Ready!\n";
 			break;
 		case 6:
@@ -313,10 +332,17 @@ void List::Edit(int i) {
 			std::cout << "Ready!\n";
 			break;
 		case 7:
-			std::cin >> dd >> mm >> yy;
-			b.SetPayDay(dd);
-			b.SetPayMonth(mm);
-			b.SetPayYear(yy);
+			std::cout << "Do you want to set your date or date that on your computer right now?\n|0 - your date       |\n|1 - on your computer|\n";
+			std::cin >> idx;
+			if (idx == 0) {
+				std::cin >> dd >> mm >> yy;
+				b.SetPayDay(dd);
+				b.SetPayMonth(mm);
+				b.SetPayYear(yy);
+			}
+			else {
+				b.SetPayDateNow();
+			}
 			std::cout << "Ready!\n";
 			break;
 		case 8:
@@ -340,11 +366,20 @@ void List::Edit(int i) {
 			break;
 		}
 	}
+	try {
+		if (b.CheckingDate() == 1) {
+			throw MyException("\n!DATE INPUT INCORRECT, you can try again!\n");
+		}
+	}
+	catch (MyException& ex) {
+		cerr << ex.what() << "\n";
+	}
 	Add(b, i);
 	Del(i + 1);
 }
 
-void List::AddWith(DataBase& object) {
+void List::AddWith(DataBase& object)
+{
 	int size = Size();
 	DataBase b;
 	for (int i = 0; i < size; i++) {

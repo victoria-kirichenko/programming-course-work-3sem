@@ -1,4 +1,4 @@
-#include "DataBase.hpp"
+#include "DataBase.h"
 #include <cstring>
 
 DataBase::DataBase()
@@ -22,20 +22,13 @@ DataBase::DataBase(const char* city, const int& citykey,
 	const int& duration, const char* telephone,
 	const int& payment_d, const int& payment_m, const int& payment_y)
 {
-	//if (a_city) {
-	//	delete[] a_city;
-	//}
 	a_city = new char[strlen(city) + 1];
 	strcpy(a_city, city);
-
 	a_citykey = citykey;
 	a_duration = duration;
 	a_tarif = 0;
 	a_price = -1;
 	a_date.SetDate(date_d, date_m, date_y);
-	//if (a_telephone) {
-	//	delete[] a_telephone;
-	//}
 	a_telephone = new char[strlen(telephone) + 1];
 	strcpy(a_telephone, telephone);
 	a_payment.SetDate(payment_d, payment_m, payment_y);
@@ -70,16 +63,11 @@ void DataBase::SetCityKey(int newKey) {
 	a_citykey = newKey;
 }
 
-void DataBase::ChangeTarif() {
-	ChooseTarif();
-	GetPrice();
-}
-
  void DataBase::SetDuration() {
 	 int a;
 	 cin >> a;
 	 a_duration = a;
-	 GetPrice();
+	 SetPrice();
  }
 
 void DataBase::SetTelephone(const char* newTel) {
@@ -110,6 +98,12 @@ void DataBase::SetYYear(int newYear) {
 	a_date.SetYear(newYear);
 }
 
+void DataBase::SetPayDateNow() {
+	a_payment.SetDateNow();
+	a_duration = 0;
+	a_price = -1;
+}
+
 void DataBase::Print()
 {
 	std::cout << "City: ";
@@ -126,7 +120,7 @@ void DataBase::Print()
 
 	std::cout << "Date: ";
 	if (a_date.isEmpty()) std::cout << "<Empty> " << std::endl;
-	else std::cout << a_date.GetDay() << '.' << a_date.GetMonth() << '.' << a_date.GetYear() << std::endl;
+	else printf("%02d.%02d.%04d\n", a_date.GetDay(), a_date.GetMonth(), a_date.GetYear());
 
 	std::cout << "Duration: ";
 	if (a_duration == 0) std::cout << "<Empty> " << std::endl;
@@ -134,7 +128,7 @@ void DataBase::Print()
 
 	std::cout << "Payment: ";
 	if (a_payment.isEmpty()) std::cout << "<Empty>" << std::endl;
-	else std::cout << a_payment.GetDay() << '.' << a_payment.GetMonth() << '.' << a_payment.GetYear() << std::endl;
+	else printf("%02d.%02d.%04d\n", a_payment.GetDay(), a_payment.GetMonth(), a_payment.GetYear());
 
 	std::cout << "Telephone: ";
 	if (a_telephone[0] == '\0') std::cout << "<Empty>" << std::endl;
@@ -164,7 +158,7 @@ void DataBase::ChooseTarif() {
 		ChooseTarif();
 		break;
 	}
-	GetPrice();
+	SetPrice();
 }
 
 void DataBase::PrintNotPaid()
@@ -265,4 +259,21 @@ DataBase& DataBase::operator= (DataBase& t)
 void DataBase::RDate()
 {
 	a_date.SetDate(rand() % 30 + 1, rand() % 12 + 1, rand() % 100 + 2000);
+}
+
+bool DataBase::CheckingDate() // валидность даты (1 - false, 0 - true)
+{
+	int dd = a_date.GetDay();
+	int mm = a_date.GetMonth();
+	int yy = a_date.GetYear();
+	if (dd <= 0 || mm <= 0 || yy <= 0) return 1;
+	else if (mm > 12) return 1;
+	else if ((mm == 4 || mm == 6 || mm == 9 || mm == 11) && (dd <= 30)) return 0;
+	else if ((mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12) && dd <= 31) return 0;
+	else if (mm == 2) {
+		if ((yy % 400 == 0 || yy % 100 != 0) && (yy % 4 == 0) && (dd <= 29)) return 0;
+		else if ((yy % 4 != 0) && (dd <= 28)) return 0;
+		else return 1;
+	}
+	else return 1;
 }

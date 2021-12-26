@@ -2,8 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib> 
-#include "DataBase.hpp"
-#include "List.hpp"
+#include "DataBase.h"
+#include "List.h"
 
 class Menu
 {

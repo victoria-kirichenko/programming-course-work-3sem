@@ -1,4 +1,4 @@
-#include "Menu.hpp"
+#include "Menu.h"
 
 void Menu::Start()
 {
@@ -22,7 +22,7 @@ void Menu::Start()
 			std::cout << "Ready!\n";
 			break;
 		case 4:
-			//info.PrintIndex();
+			info.PrintPage();
 			std::cout << "Ready!\n";
 			break;
 		case 5:
@@ -57,6 +57,10 @@ void Menu::Start()
 			std::cout << "Ready!\n";
 			break;
 		case 12:
+			info.PrintPrice();
+			std::cout << "Ready!\n";
+			break;
+		case 13:
 			loop = false;
 			std::cout << "Ready!\n";
 			break;
@@ -64,17 +68,18 @@ void Menu::Start()
 		default:
 			std::cout << "Size of objects:" << info.Size() << endl;
 			std::cout << "1 - Add Random\n";
-			std::cout << "2 - Add [City] [CityKey] [Date] [Duration] [Tele] [place in the list (begin from 1)]\n";
+			std::cout << "2 - Add [City] [CityKey] [Date] [Duration] [Tele] [index]\n";
 			std::cout << "3 - Print All\n";
-			std::cout << "4 - Print [index]\n"; // либо принт по индексу либо принт постранично цикл с system pause
+			std::cout << "4 - Print Page\n";
 			std::cout << "5 - Print Not Paid All\n";
 			std::cout << "6 - Clear all file\n";
 			std::cout << "7 - Sort by dates\n";
 			std::cout << "8 - Delete from file [number of object]\n";
 			std::cout << "9 - Edit object [number of object]\n";
-			std::cout << "10 - Paid Tarif of object [index]\n";
+			std::cout << "10 - Paid Tarif of object [number of object]\n";
 			std::cout << "11 - Paid Tarifs of All objects\n";
-			std::cout << "12 - Exit\n";
+			std::cout << "12 - Print price durations of objects\n";
+			std::cout << "13 - Exit\n";
 			break;
 		}
 	}
@@ -105,7 +110,7 @@ void Menu::Add()
 	int key, dd, mm, yy, ms, k;
 	char *Tele = new char[50];
 	int index;
-	std::cout << "preserving add or add with index?\n0 - Add with index\n1 - Preserving Add (only after Sort)\n";
+	std::cout << "preserving add or add with index?\n|0 - Add with index                  |\n|1 - Preserving Add (only after Sort)|\n";
 	std::cin >> k;
 	cout << "City: ";
 	std::cin >> City;
@@ -121,12 +126,23 @@ void Menu::Add()
 	c.ChooseTarif();
 	if (rand() % 3 == 1) c.PaidNow();
 	if (k == 0) {
-		cout << "index of object [index begin from 1]: ";
+		cout << "number of object [begin from 1]: ";
 		std::cin >> index;
 		info.Add(c, index - 1);
 	}
 	else {
 		info.AddWith(c);
+	}
+	try {
+		if (c.CheckingDate() == 1) {
+			throw MyException("\n!DATE INPUT INCORRECT, you can choose command *9 - Edit* in menu!\n");
+		}
+		else if (ms < 0) {
+			throw MyException("\n!DURATION INPUT INCORRECT, you can choose command *9 - Edit* in menu!\n");
+		}
+	}
+	catch (MyException& ex) {
+		cerr << ex.what() << "\n";
 	}
 	delete[] City;
 	delete[] Tele;

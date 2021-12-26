@@ -1,4 +1,4 @@
-#include "DataBase.hpp"
+#include "DataBase.h"
 #include <windows.h>
 
 Date::Date()
@@ -44,7 +44,7 @@ void Date::SetDateNow()
 }
 
 Date::~Date() {
-	//delete[] data;
+	;
 }
 
 bool Date::isEmpty()
@@ -91,31 +91,3 @@ bool Date::operator>(const Date& t)
 	}
 	return false;
 }
-
-bool Date::CheckingDate() { // валидность даты (1 - false, 0 - true)
-	if (dd <= 0 || mm <= 0 || yy <= 0) return 1;
-	else if (mm > 12) return 1;
-	else if ((mm == 4 || mm == 6 || mm == 9 || mm == 11) && (dd <= 30)) return 0;
-	else if ((mm == 1 || mm == 3 || mm == 5 || mm == 7 || mm == 8 || mm == 10 || mm == 12) && dd <= 31) return 0;
-	else if (mm == 2) {
-		if ((yy % 400 == 0 || yy % 100 != 0) && (yy % 4 == 0) && (dd<= 29)) return 0;
-		else if ((yy % 4 != 0) && (dd <= 28)) return 0;
-		else return 1;
-	}
-	else return 1;
-}
-
-//char* Date::ToString() {
-//	return GetDDate();
-//}
-
-//char* Date::GetDDate() {
-//	char* tmp;
-//	if (tmp) {
-//		delete[] tmp;
-//	}
-//	sprintf(data, "%02d.%02d.%04d", dd, mm, yy);
-//	tmp = new char[11];
-//	strcpy(tmp, data);
-//	return data;
-//}
